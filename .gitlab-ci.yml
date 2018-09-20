@@ -40,7 +40,8 @@ py37-test:
     - python setup.py bdist_wheel
   artifacts:
     paths:
-    - dist
+      - dist
+    expire_in: 1 day
 
 sdist:
   extends: .wheel
