@@ -1,0 +1,59 @@
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+stages:
+  - dist
+  - test
+
+.test:
+  stage: test
+  script:
+    - cp CMakeLists.txt.faiss faiss/CMakeLists.txt
+    - python -m pytest python-tests/
+
+py35-test:
+  extends: .test
+  before_script:
+    - pip install $(find dist/ -name "*py35*.whl")
+  image: grihabor/ivfhnsw:python3.5
+
+py36-test:
+  extends: .test
+  before_script:
+    - pip install $(find dist/ -name "*py36*.whl")
+  image: grihabor/ivfhnsw:python3.6
+
+py37-test:
+  extends: .test
+  before_script:
+    - pip install $(find dist/ -name "*py37*.whl")
+  image: grihabor/ivfhnsw:python3.7
+
+.wheel:
+  stage: dist
+  before_script:
+    - cp CMakeLists.txt.faiss faiss/CMakeLists.txt
+  script:
+    - python setup.py bdist_wheel
+  artifacts:
+    paths:
+    - dist
+
+sdist:
+  extends: .wheel
+  image: grihabor/ivfhnsw:python3.7
+  script:
+    - python setup.py sdist
+
+py35-wheel:
+  extends: .wheel
+  image: grihabor/ivfhnsw:python3.5
+
+py36-wheel:
+  extends: .wheel
+  image: grihabor/ivfhnsw:python3.6
+
+py37-wheel:
+  extends: .wheel
+  image: grihabor/ivfhnsw:python3.7
+
