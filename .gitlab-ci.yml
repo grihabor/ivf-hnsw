@@ -9,6 +9,7 @@ stages:
   stage: test
   script:
     - cp CMakeLists.txt.faiss faiss/CMakeLists.txt
+    - pip install pytest
     - python -m pytest python-tests/
 
 py35-test:
