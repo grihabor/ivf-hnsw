@@ -1,5 +1,6 @@
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
+  OMP_NUM_THREADS: 1
 
 stages:
   - dist
